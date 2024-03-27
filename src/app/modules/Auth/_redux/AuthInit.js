@@ -8,9 +8,9 @@ function AuthInit(props) {
   const didRequest = useRef(false);
   const dispatch = useDispatch();
   const [showSplashScreen, setShowSplashScreen] = useState(true);
-  const { authToken } = useSelector(
+  const { token } = useSelector(
     ({ auth }) => ({
-      authToken: auth.authToken,
+      token: auth.token,
     }),
     shallowEqual
   );
@@ -35,7 +35,7 @@ function AuthInit(props) {
       return () => (didRequest.current = true);
     };
 
-    if (authToken) {
+    if (token) {
       requestUser();
     } else {
       dispatch(props.fulfillUser(undefined));

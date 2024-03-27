@@ -1,16 +1,16 @@
 export default function setupAxios(axios, store) {
   axios.interceptors.request.use(
-    config => {
+    (config) => {
       const {
-        auth: { authToken }
+        auth: { token },
       } = store.getState();
 
-      if (authToken) {
-        config.headers.Authorization = `Bearer ${authToken}`;
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
       }
 
       return config;
     },
-    err => Promise.reject(err)
+    (err) => Promise.reject(err)
   );
 }

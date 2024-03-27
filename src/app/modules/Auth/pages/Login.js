@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { FormattedMessage, injectIntl } from "react-intl";
 import * as auth from "../_redux/authRedux";
 import { login } from "../_redux/authCrud";
+import Swal from "sweetalert2";
 
 /*
   INTL (i18n) docs:
@@ -18,31 +19,24 @@ import { login } from "../_redux/authCrud";
 */
 
 const initialValues = {
-  email: "admin@demo.com",
-  password: "demo",
+  username: "admin",
+  password: "Admin1234!",
 };
 
 function Login(props) {
   const { intl } = props;
   const [loading, setLoading] = useState(false);
   const LoginSchema = Yup.object().shape({
-    email: Yup.string()
-      .email("Wrong email format")
-      .min(3, "Minimum 3 symbols")
-      .max(50, "Maximum 50 symbols")
-      .required(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
-      ),
-    password: Yup.string()
-      .min(3, "Minimum 3 symbols")
-      .max(50, "Maximum 50 symbols")
-      .required(
-        intl.formatMessage({
-          id: "AUTH.VALIDATION.REQUIRED_FIELD",
-        })
-      ),
+    username: Yup.string().required(
+      intl.formatMessage({
+        id: "AUTH.VALIDATION.REQUIRED_FIELD",
+      })
+    ),
+    password: Yup.string().required(
+      intl.formatMessage({
+        id: "AUTH.VALIDATION.REQUIRED_FIELD",
+      })
+    ),
   });
 
   const enableLoading = () => {
@@ -71,11 +65,30 @@ function Login(props) {
     onSubmit: (values, { setStatus, setSubmitting }) => {
       enableLoading();
       setTimeout(() => {
-        login(values.email, values.password)
-          .then(({ data: { authToken } }) => {
-            disableLoading();
+        login(values.username, values.password)
+          .then((response) => {
+            console.log(response, "response");
+            if (response.data.data.status_code === 401) {
+              console.log("if");
 
-            props.login(authToken);
+              Swal.fire({
+                title: "Error!",
+                text: `${response.data.message}`,
+                icon: "error",
+                heightAuto: false,
+                confirmButtonText: "Ok",
+              }).then((result) => {});
+            } else {
+              console.log(
+                response.data.accessToken,
+                "response.data.data.access_token"
+              );
+
+              const token = response.data.data.accessToken;
+              console.log(token, "token");
+              props.login(token);
+              disableLoading();
+            }
           })
           .catch(() => {
             setStatus(
@@ -125,17 +138,17 @@ function Login(props) {
 
         <div className="form-group fv-plugins-icon-container">
           <input
-            placeholder="Email"
-            type="email"
+            placeholder="username"
+            type="username"
             className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-              "email"
+              "username"
             )}`}
-            name="email"
-            {...formik.getFieldProps("email")}
+            name="username"
+            {...formik.getFieldProps("username")}
           />
-          {formik.touched.email && formik.errors.email ? (
+          {formik.touched.username && formik.errors.username ? (
             <div className="fv-plugins-message-container">
-              <div className="fv-help-block">{formik.errors.email}</div>
+              <div className="fv-help-block">{formik.errors.username}</div>
             </div>
           ) : null}
         </div>

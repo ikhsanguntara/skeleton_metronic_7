@@ -2,6 +2,8 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { put, takeLatest } from "redux-saga/effects";
 import { getUserByToken } from "./authCrud";
+import Swal from "sweetalert2";
+import { useHistory } from "react-router";
 
 export const actionTypes = {
   Login: "[Login] Action",
@@ -14,23 +16,23 @@ export const actionTypes = {
 
 const initialAuthState = {
   user: undefined,
-  authToken: undefined,
+  token: undefined,
 };
 
 export const reducer = persistReducer(
-  { storage, key: "v726-demo1-auth", whitelist: ["authToken"] },
+  { storage, key: "v726-demo1-auth", whitelist: ["token"] },
   (state = initialAuthState, action) => {
     switch (action.type) {
       case actionTypes.Login: {
-        const { authToken } = action.payload;
+        const { token } = action.payload;
 
-        return { authToken, user: undefined };
+        return { token, user: undefined };
       }
 
       case actionTypes.Register: {
-        const { authToken } = action.payload;
+        const { token } = action.payload;
 
-        return { authToken, user: undefined };
+        return { token, user: undefined };
       }
 
       case actionTypes.Logout: {
@@ -54,11 +56,13 @@ export const reducer = persistReducer(
   }
 );
 
+export const selectUser = (state) => state.auth.user.data;
+
 export const actions = {
-  login: (authToken) => ({ type: actionTypes.Login, payload: { authToken } }),
-  register: (authToken) => ({
+  login: (token) => ({ type: actionTypes.Login, payload: { token } }),
+  register: (token) => ({
     type: actionTypes.Register,
-    payload: { authToken },
+    payload: { token },
   }),
   logout: () => ({ type: actionTypes.Logout }),
   requestUser: (user) => ({
