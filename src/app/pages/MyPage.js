@@ -4,10 +4,10 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 export const MyPage = () => {
   const initialData = [
-    { id: "1", content: "JAPUT", lat: -6.2088, lng: 106.8456, status: "N" }, // Jakarta Pusat (Titik 1)
-    { id: "2", content: "JATIM", lat: -6.2348, lng: 106.8886, status: "N" }, // Jakarta Timur (Titik 2)
-    { id: "3", content: "BEKASI", lat: -6.2469, lng: 107.0065, status: "N" }, // Bekasi Timur (Titik 3)
-    { id: "4", content: "KARAWANG", lat: -6.3084, lng: 107.235, status: "N" }, // Karawang (Titik 4)
+    { id: "1", content: "Item 1", lat: -6.2088, lng: 106.8456, status: "Y" }, // Jakarta Pusat (Titik 1)
+    { id: "2", content: "Item 2", lat: -6.2348, lng: 106.8886, status: "Y" }, // Jakarta Timur (Titik 2)
+    { id: "3", content: "Item 3", lat: -6.2469, lng: 107.0065, status: "N" }, // Bekasi Timur (Titik 3)
+    { id: "4", content: "Item 4", lat: -6.3084, lng: 107.235, status: "N" }, // Karawang (Titik 4)
   ];
 
   const [points, setPoints] = useState(initialData);
@@ -21,6 +21,12 @@ export const MyPage = () => {
   }, [points, map, maps]);
 
   const drawRoute = (map, maps) => {
+    // Hapus rute dan penanda lama
+    map && map.setZoom(map.getZoom()); // Workaround untuk memicu re-rendering peta
+    map && map.setCenter(map.getCenter()); // Workaround untuk memicu re-rendering peta
+
+    
+
     const directionsService = new maps.DirectionsService();
     const directionsRenderer = new maps.DirectionsRenderer();
 
