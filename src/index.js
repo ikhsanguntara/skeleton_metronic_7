@@ -25,6 +25,7 @@ import {
   MetronicSubheaderProvider,
 } from "./_metronic/layout";
 import { MetronicI18nProvider } from "./_metronic/i18n";
+import { env } from "./env";
 
 /**
  * Base URL of the website.
@@ -46,6 +47,7 @@ const { PUBLIC_URL } = process.env;
  * @see https://github.com/axios/axios#interceptors
  */
 _redux.setupAxios(axios, store);
+if (env.NODE_ENV !== "development") console.log = () => {};
 
 ReactDOM.render(
   <MetronicI18nProvider>

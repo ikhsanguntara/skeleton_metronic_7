@@ -2,8 +2,6 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { put, takeLatest } from "redux-saga/effects";
 import { getUserByToken } from "./authCrud";
-import Swal from "sweetalert2";
-import { useHistory } from "react-router";
 
 export const actionTypes = {
   Login: "[Login] Action",

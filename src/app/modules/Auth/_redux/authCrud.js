@@ -1,9 +1,10 @@
 import axios from "axios";
+import { env } from "../../../../env";
 
-export const LOGIN_URL = `${process.env.REACT_APP_API_URL}/api/login`;
+export const LOGIN_URL = `${env.REACT_APP_API_URL}/api/login`;
 export const REGISTER_URL = "api/auth/register";
 export const REQUEST_PASSWORD_URL = "api/auth/forgot-password";
-export const ME_URL = `${process.env.REACT_APP_API_URL}/api/user/me`;
+export const ME_URL = `${env.REACT_APP_API_URL}/api/user/me`;
 
 export function login(username, password) {
   return axios.post(LOGIN_URL, { username, password }).catch((error) => {
