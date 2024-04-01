@@ -19,8 +19,8 @@ import Swal from "sweetalert2";
 */
 
 const initialValues = {
-  username: "admin",
-  password: "Admin1234!",
+  username: "ikhsan",
+  password: "password",
 };
 
 function Login(props) {
@@ -80,11 +80,11 @@ function Login(props) {
               }).then((result) => {});
             } else {
               console.log(
-                response.data.accessToken,
+                response.data.data.access_token,
                 "response.data.data.access_token"
               );
 
-              const token = response.data.data.accessToken;
+              const token = response.data.data.access_token;
               console.log(token, "token");
               props.login(token);
               disableLoading();
